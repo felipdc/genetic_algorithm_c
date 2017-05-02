@@ -16,6 +16,8 @@ char create_generation();
 
 int max_scores();
 
+char crossing_over();
+
 int main(){
 
 	int i;
@@ -165,18 +167,45 @@ int max_scores(char **indiv, int size_of_goal, int score[]){
 
 	}
 
+	crossing_over(indiv, size_of_goal, max_1, max_2);
 
-	for(i=0;i<GENERATION_SIZE;i++){
 
-		printf(" %d \n", score[i]);
+}
+
+char crossing_over(char **indiv, int size_of_goal, int max_1, int max_2){
+
+
+	char *father_a = indiv[max_1];
+
+	char *father_b = indiv[max_2];
+
+	char new_indiv[size_of_goal];
+
+	int i;
+
+	printf("%s \n", father_a);
+
+	printf("%s \n", father_b);
+
+	//split best individuals into two and store in new_indiv
+
+	for(i=0;i<=size_of_goal;i++){
+
+		if(i<=6){
+
+			new_indiv[i] = indiv[max_1][i];
+
+		}
+
+		else{
+
+			new_indiv[i] = indiv[max_2][i];
+
+		}
 
 	}
 
-	printf("\n %d", x);
-
-	printf("\n %d", y);
-
-
+	printf("%s \n", new_indiv);
 
 
 }
