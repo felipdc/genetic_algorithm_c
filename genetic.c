@@ -14,7 +14,7 @@ void score_calc();
 
 char create_generation();
 
-int sort_scores();
+int max_scores();
 
 int main(){
 
@@ -118,52 +118,63 @@ void score_calc(char **indiv, int size_of_goal){
 
 	//}
 
-	sort_scores(indiv, size_of_goal, score);
+	max_scores(indiv, size_of_goal, score);
 
 }
 
 
-int sort_scores(char **indiv, int size_of_goal, int score[]){
+int max_scores(char **indiv, int size_of_goal, int score[]){
 
-	//organize score in crescent mode using insert sort
+	// search for individuals that have the best score
 
-	int i, j, x;
+	int x = -1;
+	int y = x;	
+	int i, max_1, max_2;
 
-	//for(i=0;i<GENERATION_SIZE;i++){
-
-	//	printf("score %d \n", score[i]);
-
-	//}
-
-	printf("\n\n\n");
-
+	//first maximum individual
 
 	for(i=0;i<GENERATION_SIZE;i++){
 
-		for(j=GENERATION_SIZE-1; j>i || score[j] > score[j-1]; j--){
+		if(score[i] >= x){
 
-			x = score[j];
+			x = score[i];
 
-			if(score[j] < score[j-1]){
-
-				x = score[j-1];
-
-				score[j-1] = score[j];
-
-				score[j] = x;
-
-			}
+			max_1 = i;
 
 		}
 
 	}
 
-	
+	//second maximum individual
+
 	for(i=0;i<GENERATION_SIZE;i++){
 
-		printf("score %d \n", score[i]);
+		if(i==max_1){
+
+			continue;
+		}
+
+		if(score[i] >= y){
+
+			y = score[i];
+
+			max_2 = i;
+
+
+		}
 
 	}
+
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		printf(" %d \n", score[i]);
+
+	}
+
+	printf("\n %d", x);
+
+	printf("\n %d", y);
 
 
 
