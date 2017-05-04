@@ -1,14 +1,24 @@
-#define GENERATION_SIZE 10
-#define MUTATION_RATE 0.8
+/* Code made by Felipe Tiago De Carli
+email: felipetdecarli@gmail.com
+Feel free to use.
+Please keep the authors name in the code.
+*/
+
+
+
+#define GENERATION_SIZE 12 //carefull, dont put an even value!
+#define MUTATION_RATE 0.92
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-const char letters[27] = " abcdefghijklmnopqrstuvxywz";
+const char letters[27] = "abc defghijklmnopqrstuvxywz";
 
-const char *goal = "hello world";
+const char *goal = "luah debus";
+
+int generation = 1;
 
 void score_calc();	
 
@@ -17,6 +27,8 @@ char create_generation();
 int max_scores();
 
 char crossing_over();
+
+char mutate_individuals();	
 
 int main(){
 
@@ -50,8 +62,6 @@ int main(){
 
 	create_generation(indiv, size_of_goal);
 
-	free(*indiv);
-
 	return 0;
 
 }
@@ -61,6 +71,8 @@ char create_generation(char **indiv, int size_of_goal){
 	int i, j;
 
 	printf("Geracao 1: \n --------------------------------- \n");
+
+	generation++;
 
 	for(i=0;i<GENERATION_SIZE;i++){
 
@@ -183,15 +195,15 @@ char crossing_over(char **indiv, int size_of_goal, int max_1, int max_2){
 
 	int i;
 
-	printf("%s \n", father_a);
+	//printf("%s \n", father_a);
 
-	printf("%s \n", father_b);
+	//printf("%s \n", father_b);
 
 	//split best individuals into two and store in new_indiv
 
 	for(i=0;i<=size_of_goal;i++){
 
-		if(i<=6){
+		if(i <= size_of_goal/2){
 
 			new_indiv[i] = indiv[max_1][i];
 
@@ -205,7 +217,107 @@ char crossing_over(char **indiv, int size_of_goal, int max_1, int max_2){
 
 	}
 
-	printf("%s \n", new_indiv);
 
+	//free(*indiv);	
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		for(int j=0;j<size_of_goal;j++){
+
+			indiv[i][j] = new_indiv[j];
+
+		}
+	}
+
+
+	mutate_individuals(indiv, size_of_goal);
+
+}
+
+
+char mutate_individuals(char **indiv, int size_of_goal){
+
+	int i,j;
+
+	//creating arrays of random numbers
+
+	int random_part[GENERATION_SIZE][size_of_goal];
+
+	int random_char[GENERATION_SIZE][size_of_goal];
+
+	//filling arrays with random numbers
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		for(j=0;j<size_of_goal;j++){
+
+			random_part[i][j] = rand() % 100;
+
+			random_char[i][j] = rand() % 28;
+
+		}
+
+	}
+
+	// mutation in each letter (chromossome) of each individual
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		for(j=0;j<size_of_goal;j++){
+
+			if (random_part[i][j] >= (MUTATION_RATE*100)){
+
+				indiv[i][j] = letters[random_char[i][j]];
+
+				//printf("%c", indiv[i][j]);
+
+			}
+
+			else{
+
+				//printf("%c", indiv[i][j]);
+			}
+
+		}
+
+		//printf("\n");
+
+	}
+
+	printf("Geracao %d: \n", generation);
+
+	generation++;
+
+	printf("--------------------------------- \n");
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		printf("%s\n", indiv[i]);
+
+
+	}
+
+	printf("--------------------------------- \n");
+
+
+	//check for solution
+
+	for(i=0;i<GENERATION_SIZE;i++){
+
+		if (strcmp(indiv[i],goal) == 0){
+
+			printf("Solution found! \n");
+
+			printf("Total individuals = %d \n", ((generation-1)*GENERATION_SIZE));
+
+			return 0;
+
+		}
+
+	}
+
+	fflush(stdout);
+
+	score_calc(indiv, size_of_goal);
 
 }
