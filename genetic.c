@@ -3,22 +3,22 @@ email: felipetdecarli@gmail.com
 Feel free to use.
 Please keep the authors name in the code.
 */
-
-
-
-#define GENERATION_SIZE 12 //carefull, dont put an even value!
-#define MUTATION_RATE 0.92
-
+//95da8ed84D84D10
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
+#define GENERATION_SIZE 12 //be carefull, dont put an even value!
+#define MUTATION_RATE 0.92
+#define SUCCESS 0
+#define FAILED -1
+
 const char letters[27] = "abc defghijklmnopqrstuvxywz";
 
-const char *goal = "luah debus";
+const char *goal = "come meu cu";
 
-int generation = 1;
+unsigned int generation = 1;
 
 void score_calc();	
 
@@ -54,7 +54,7 @@ int main(){
 
 			free(*indiv);
 
-			return -1;
+			return FAILED;
 
 		}
 
@@ -62,7 +62,9 @@ int main(){
 
 	create_generation(indiv, size_of_goal);
 
-	return 0;
+	free(*indiv);
+
+	return SUCCESS;
 
 }
 
@@ -195,10 +197,6 @@ char crossing_over(char **indiv, int size_of_goal, int max_1, int max_2){
 
 	int i;
 
-	//printf("%s \n", father_a);
-
-	//printf("%s \n", father_b);
-
 	//split best individuals into two and store in new_indiv
 
 	for(i=0;i<=size_of_goal;i++){
@@ -217,8 +215,6 @@ char crossing_over(char **indiv, int size_of_goal, int max_1, int max_2){
 
 	}
 
-
-	//free(*indiv);	
 
 	for(i=0;i<GENERATION_SIZE;i++){
 
@@ -253,7 +249,7 @@ char mutate_individuals(char **indiv, int size_of_goal){
 
 			random_part[i][j] = rand() % 100;
 
-			random_char[i][j] = rand() % 28;
+			random_char[i][j] = rand() % strlen(letters)+1;
 
 		}
 
@@ -269,18 +265,9 @@ char mutate_individuals(char **indiv, int size_of_goal){
 
 				indiv[i][j] = letters[random_char[i][j]];
 
-				//printf("%c", indiv[i][j]);
-
-			}
-
-			else{
-
-				//printf("%c", indiv[i][j]);
 			}
 
 		}
-
-		//printf("\n");
 
 	}
 
@@ -310,7 +297,7 @@ char mutate_individuals(char **indiv, int size_of_goal){
 
 			printf("Total individuals = %d \n", ((generation-1)*GENERATION_SIZE));
 
-			return 0;
+			return SUCCESS;
 
 		}
 
