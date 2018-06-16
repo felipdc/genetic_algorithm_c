@@ -1,9 +1,5 @@
-/* Code made by Felipe Tiago De Carli
-email: felipetdecarli@gmail.com
-Feel free to use.
-Please keep the authors name in the code.
-*/
-//95da8ed84D84D10
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
